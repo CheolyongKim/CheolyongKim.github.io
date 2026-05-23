@@ -4,124 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>김철용 | Portfolio</title>
-  <meta name="description" content="김철용 — 개발자 포트폴리오 웹사이트">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- ========== HEADER ========== -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="#" class="logo" id="header-logo"></a>
-      <nav class="nav-links" id="header-nav"></nav>
-      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기">
+  <!-- Pill Nav -->
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-pill">
+      <div class="nav-logo" id="nav-logo"></div>
+      <div class="nav-links" id="nav-links"></div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">
         <span></span><span></span><span></span>
       </button>
     </div>
-  </header>
-
+    <div class="nav-mobile" id="nav-mobile"></div>
+  </nav>
 
   <main>
 
-    <!-- ========== HERO (Set A) ========== -->
-    <section id="hero" class="hero palette-a section-pad">
-      <div class="container">
-        <div class="hero-content">
-          <span class="hero-tag reveal" data-hero="tag"></span>
-          <h1 class="hero-title reveal" data-hero="title"></h1>
-          <p class="hero-philosophy reveal" data-hero="philosophy"></p>
-          <p class="hero-desc reveal" data-hero="description"></p>
-          <div class="hero-contacts reveal" data-hero="contacts"></div>
-          <button class="btn-cta reveal" data-hero="cta"></button>
+    <!-- HERO — centered title, rotating word, scroll corner-rounding -->
+    <section class="hero" id="hero">
+      <div class="hero-bg" id="hero-bg">
+        <div class="hero-center">
+          <h1 class="hero-title" id="hero-title"></h1>
+          <p class="hero-sub" id="hero-sub"></p>
         </div>
       </div>
     </section>
 
-
-    <!-- ── bridge ── -->
-    <div class="palette-bridge-a-to-b" aria-hidden="true"></div>
-
-
-    <!-- ========== TECH STACK (Set B) ========== -->
-    <section id="tech-stack" class="palette-b section-pad">
-      <div class="container">
-        <h2 class="section-title reveal" data-section="title"></h2>
-        <div id="tech-grid" class="tech-grid"></div>
+    <!-- STICKY TEXT REVEAL — word-by-word color transition on scroll -->
+    <section class="sticky-text-section" id="sticky-text">
+      <div class="sticky-text-inner">
+        <div class="sticky-text-content">
+          <p class="sticky-text-paragraph" id="sticky-paragraph"></p>
+        </div>
       </div>
     </section>
 
-
-    <!-- ── bridge ── -->
-    <div class="palette-bridge-b-to-a" aria-hidden="true"></div>
-
-
-    <!-- ========== PROJECTS (Set A) ========== -->
-    <section id="projects" class="palette-a section-pad">
+    <!-- TECH STACK — cards with scroll reveal -->
+    <section class="section-tech" id="tech">
       <div class="container">
-        <h2 class="section-title reveal" data-section="title"></h2>
-        <div id="project-grid" class="project-grid"></div>
+        <div class="section-label" id="tech-label"></div>
+        <div class="tech-grid" id="tech-grid"></div>
       </div>
     </section>
 
-
-    <!-- ── bridge ── -->
-    <div class="palette-bridge-a-to-b" aria-hidden="true"></div>
-
-
-    <!-- ========== TIMELINE (Set B) ========== -->
-    <section id="timeline" class="palette-b section-pad">
+    <!-- PROJECTS -->
+    <section class="section-projects" id="projects">
       <div class="container">
-        <h2 class="section-title reveal" data-section="title"></h2>
-        <div id="timeline-container" class="timeline-container"></div>
+        <div class="section-label" id="projects-label"></div>
+        <div class="project-grid" id="project-grid"></div>
       </div>
     </section>
 
-
-    <!-- ── bridge ── -->
-    <div class="palette-bridge-b-to-a" aria-hidden="true"></div>
-
-
-    <!-- ========== DETAILS / Progressive Disclosure (Set A) ========== -->
-    <section id="details" class="details-section palette-a">
+    <!-- TIMELINE (dark section, accordion) -->
+    <section class="section-timeline" id="timeline">
       <div class="container">
-        <h2 class="section-title" data-section="title"></h2>
-        <div class="details-frame details-content"></div>
+        <h2 class="tl-heading" id="tl-heading"></h2>
+        <p class="tl-subtext" id="tl-subtext"></p>
+        <div class="accordion" id="accordion"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section-contact" id="contact">
+      <div class="container">
+        <h2 class="contact-heading" id="contact-heading"></h2>
+        <div class="contact-grid" id="contact-grid"></div>
       </div>
     </section>
 
   </main>
 
-
-  <!-- ========== FOOTER (Set B) ========== -->
-  <footer class="palette-b">
-    <div class="container site-footer">
-      <p class="site-footer-text" id="footer-text"></p>
+  <!-- FOOTER (dark) -->
+  <footer class="site-footer">
+    <div class="container">
+      <p id="footer-text"></p>
     </div>
   </footer>
 
-
-  <!-- ========== MODAL ========== -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal-box">
-      <button class="modal-close" id="modal-close" aria-label="닫기">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <div id="modal-content"></div>
-    </div>
-  </div>
-
-
-  <!-- Scripts: data first, then logic -->
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>

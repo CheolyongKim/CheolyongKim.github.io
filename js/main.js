@@ -1,296 +1,360 @@
-/**
- * main.js — DOM 렌더링, 이벤트 핸들링, 스크롤 애니메이션
- * 
- * SITE_DATA (data.js)를 읽어 index.html의 빈 컨테이너에 콘텐츠를 주입합니다.
- */
+// ============================================================
+// main.js — umanodesign 클론 인터랙션
+// ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
-  // ─────────────────────────────────────────────
-  // 1. 콘텐츠 렌더링
-  // ─────────────────────────────────────────────
-
-  renderHeader();
-  renderHero();
-  renderTechStack();
-  renderProjects();
-  renderTimeline();
-  renderDetails();
-  renderFooter();
-
-  // ─────────────────────────────────────────────
-  // 2. 기능 초기화
-  // ─────────────────────────────────────────────
-
+  render();
+  initNav();
+  initHeroWordRotation();
+  initHeroScrollEffect();
+  initStickyTextReveal();
   initScrollReveal();
-  initHeaderScroll();
+  initAccordion();
   initMobileNav();
-  initProgressiveDisclosure();
-  initModal();
 
 
-  // ============================================================
-  // RENDER FUNCTIONS
-  // ============================================================
+  // ────────────────────────────────────────
+  // RENDER
+  // ────────────────────────────────────────
 
-  function renderHeader() {
-    const logoEl = document.getElementById('header-logo');
-    const navEl = document.getElementById('header-nav');
-    if (!logoEl || !navEl) return;
+  function render() {
+    var D = SITE_DATA;
 
-    logoEl.textContent = SITE_DATA.meta.logoText;
-
-    navEl.innerHTML = SITE_DATA.meta.navLinks
-      .map(link => `<a href="#${link.targetId}">${link.label}</a>`)
-      .join('');
-  }
-
-  function renderHero() {
-    const { hero } = SITE_DATA;
-    const section = document.getElementById('hero');
-    if (!section) return;
-
-    const tagEl = section.querySelector('[data-hero="tag"]');
-    const titleEl = section.querySelector('[data-hero="title"]');
-    const philEl = section.querySelector('[data-hero="philosophy"]');
-    const descEl = section.querySelector('[data-hero="description"]');
-    const contactsEl = section.querySelector('[data-hero="contacts"]');
-    const ctaEl = section.querySelector('[data-hero="cta"]');
-
-    if (tagEl) tagEl.textContent = hero.tag;
-    if (titleEl) titleEl.textContent = hero.title;
-    if (philEl) philEl.textContent = hero.philosophy;
-    if (descEl) descEl.textContent = hero.description;
-
-    if (contactsEl) {
-      contactsEl.innerHTML = hero.contacts.map(c =>
-        `<a href="${c.href}" class="contact-item" ${c.type === 'github' ? 'target="_blank" rel="noopener"' : ''}>
-          <i class="${c.icon}"></i>${c.label}
-        </a>`
-      ).join('');
+    // Nav
+    var navLogo = document.getElementById('nav-logo');
+    var navLinks = document.getElementById('nav-links');
+    var navMobile = document.getElementById('nav-mobile');
+    if (navLogo) navLogo.textContent = D.nav.logo;
+    if (navLinks) {
+      navLinks.innerHTML = D.nav.links.map(function (l) {
+        return '<a href="#' + l.id + '">' + l.label + '</a>';
+      }).join('');
+    }
+    if (navMobile) {
+      navMobile.innerHTML = D.nav.links.concat([{ label: D.nav.ctaLabel, id: D.nav.ctaId }])
+        .map(function (l) {
+          return '<a href="#' + l.id + '">' + l.label + '</a>';
+        }).join('');
     }
 
-    if (ctaEl) {
-      ctaEl.innerHTML = `${hero.ctaText} <i class="fa-solid fa-chevron-down"></i>`;
+    // Hero
+    var heroTitle = document.getElementById('hero-title');
+    var heroSub = document.getElementById('hero-sub');
+
+    if (heroTitle) {
+      heroTitle.innerHTML =
+        '<span class="line-wrap"><span class="line-inner">' + D.hero.titleTop + '</span></span>' +
+        '<span class="line-wrap"><span class="line-inner">' + D.hero.titleBottom + '</span></span>';
     }
-  }
 
-  function renderTechStack() {
-    const { techStack } = SITE_DATA;
-    const titleEl = document.querySelector('#tech-stack [data-section="title"]');
-    const gridEl = document.getElementById('tech-grid');
-    if (!gridEl) return;
+    if (heroSub) {
+      heroSub.innerHTML =
+        D.hero.rotatingPrefix + ' ' +
+        '<span class="rotating-word" id="rotating-word">' +
+          '<strong>' + D.hero.rotatingWords[0] + '</strong>' +
+        '</span>' +
+        ' ' + D.hero.rotatingSuffix;
+    }
 
-    if (titleEl) titleEl.textContent = techStack.sectionTitle;
+    // Sticky text
+    var stickyP = document.getElementById('sticky-paragraph');
+    if (stickyP) {
+      stickyP.innerHTML = D.stickyText.words.map(function (w) {
+        return '<span class="sw">' + w + '</span>';
+      }).join(' ');
+    }
 
-    gridEl.innerHTML = techStack.items.map((tech, i) =>
-      `<div class="tech-card reveal" style="transition-delay: ${i * 0.1}s">
-        <div class="tech-name">${tech.name}</div>
-        <div class="tech-desc">${tech.desc}</div>
-      </div>`
-    ).join('');
-  }
+    // Tech
+    var techLabel = document.getElementById('tech-label');
+    var techGrid = document.getElementById('tech-grid');
+    if (techLabel) techLabel.textContent = D.tech.label;
+    if (techGrid) {
+      techGrid.innerHTML = D.tech.items.map(function (t, i) {
+        return '<div class="tech-card" data-delay="' + (i * 100) + '">' +
+               '<div class="tech-icon"><i class="' + t.icon + '"></i></div>' +
+               '<div class="tech-name">' + t.name + '</div>' +
+               '<div class="tech-desc">' + t.desc + '</div></div>';
+      }).join('');
+    }
 
-  function renderProjects() {
-    const { projects } = SITE_DATA;
-    const titleEl = document.querySelector('#projects [data-section="title"]');
-    const gridEl = document.getElementById('project-grid');
-    if (!gridEl) return;
+    // Projects
+    var projLabel = document.getElementById('projects-label');
+    var projGrid = document.getElementById('project-grid');
+    if (projLabel) projLabel.textContent = D.projects.label;
+    if (projGrid) {
+      projGrid.innerHTML = D.projects.items.map(function (p, i) {
+        return '<div class="project-card" data-delay="' + (i * 80) + '">' +
+               '<div class="project-thumb">' +
+                 '<img src="' + p.image + '" alt="' + p.title + '" ' +
+                   'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                 '<div class="fallback-icon" style="display:none"><i class="' + p.icon + '"></i></div>' +
+               '</div>' +
+               '<div class="project-body">' +
+                 '<div class="project-title">' + p.title + '</div>' +
+                 '<div class="project-desc">' + p.desc + '</div>' +
+                 '<div class="project-tag">' + p.tag + '</div>' +
+               '</div></div>';
+      }).join('');
+    }
 
-    if (titleEl) titleEl.textContent = projects.sectionTitle;
+    // Timeline / Accordion
+    var tlH = document.getElementById('tl-heading');
+    var tlS = document.getElementById('tl-subtext');
+    var acc = document.getElementById('accordion');
+    if (tlH) tlH.textContent = D.timeline.heading;
+    if (tlS) tlS.textContent = D.timeline.subtext;
+    if (acc) {
+      acc.innerHTML = D.timeline.items.map(function (item, i) {
+        return '<div class="acc-item" data-idx="' + i + '">' +
+               '<button class="acc-trigger">' +
+                 '<div class="acc-icon">' +
+                   '<svg viewBox="0 0 24 24" fill="none">' +
+                     '<line x1="8" y1="12" x2="16" y2="12" class="horiz"></line>' +
+                     '<line x1="12" y1="8" x2="12" y2="16" class="vert"></line>' +
+                   '</svg>' +
+                 '</div>' +
+                 '<span class="acc-question">' + item.q + '</span>' +
+               '</button>' +
+               '<div class="acc-body">' +
+                 '<div class="acc-answer">' + item.a + '</div>' +
+               '</div></div>';
+      }).join('');
+    }
 
-    gridEl.innerHTML = projects.items.map((proj, i) =>
-      `<div class="project-card reveal" style="transition-delay: ${i * 0.1}s">
-        <div class="project-image-wrap">
-          <img
-            src="${proj.image}"
-            alt="${proj.title}"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          >
-          <div class="project-icon-fallback" style="display:none; align-items:center; justify-content:center; width:100%; height:100%;">
-            <i class="${proj.icon}"></i>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-title">${proj.title}</div>
-          <div class="project-desc">${proj.desc}</div>
-          <div class="project-tag">${proj.tag}</div>
-        </div>
-      </div>`
-    ).join('');
-  }
+    // Contact
+    var cH = document.getElementById('contact-heading');
+    var cG = document.getElementById('contact-grid');
+    if (cH) cH.textContent = D.contact.heading;
+    if (cG) {
+      cG.innerHTML = D.contact.items.map(function (c) {
+        return '<div class="contact-row">' +
+               '<p class="contact-label">' + c.label + '</p>' +
+               '<a class="contact-value" href="' + c.href + '"' +
+               (c.href.indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') +
+               '>' + c.value + '</a></div>';
+      }).join('');
+    }
 
-  function renderTimeline() {
-    const { timeline } = SITE_DATA;
-    const titleEl = document.querySelector('#timeline [data-section="title"]');
-    const containerEl = document.getElementById('timeline-container');
-    if (!containerEl) return;
-
-    if (titleEl) titleEl.textContent = timeline.sectionTitle;
-
-    containerEl.innerHTML = timeline.items.map((item, i) =>
-      `<div class="timeline-item reveal" data-modal-id="${item.id}" style="transition-delay: ${i * 0.12}s">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">${item.date}</div>
-        <div class="timeline-title">${item.title}</div>
-        <div class="timeline-summary">${item.summary}</div>
-        <span class="timeline-hint">
-          <i class="fa-solid fa-arrow-right"></i> 자세히 보기
-        </span>
-      </div>`
-    ).join('');
-  }
-
-  function renderDetails() {
-    const { details } = SITE_DATA;
-    const titleEl = document.querySelector('#details [data-section="title"]');
-    const frameEl = document.querySelector('#details .details-frame');
-    if (!frameEl) return;
-
-    if (titleEl) titleEl.textContent = details.sectionTitle;
-
-    frameEl.innerHTML = `
-      <div class="details-icon"><i class="fa-solid fa-circle-info"></i></div>
-      <p>${details.placeholder}</p>
-    `;
-  }
-
-  function renderFooter() {
-    const el = document.getElementById('footer-text');
-    if (el) el.textContent = SITE_DATA.footer.copyright;
-  }
-
-
-  // ============================================================
-  // SCROLL REVEAL (Intersection Observer)
-  // ============================================================
-
-  function initScrollReveal() {
-    const reveals = document.querySelectorAll('.reveal');
-    if (!reveals.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    reveals.forEach(el => observer.observe(el));
+    // Footer
+    var ft = document.getElementById('footer-text');
+    if (ft) ft.textContent = D.footer.copy;
   }
 
 
-  // ============================================================
-  // HEADER SCROLL EFFECT
-  // ============================================================
+  // ────────────────────────────────────────
+  // NAV — scroll-direction hide/show
+  // ────────────────────────────────────────
 
-  function initHeaderScroll() {
-    const header = document.querySelector('.site-header');
-    if (!header) return;
+  function initNav() {
+    var nav = document.getElementById('site-nav');
+    if (!nav) return;
+    var lastY = 0;
+    var ticking = false;
 
-    let ticking = false;
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', function () {
       if (!ticking) {
-        requestAnimationFrame(() => {
-          header.classList.toggle('scrolled', window.scrollY > 60);
+        requestAnimationFrame(function () {
+          var y = window.scrollY;
+          if (y > 120) {
+            if (y > lastY + 5) nav.classList.add('nav-hidden');
+            else if (y < lastY - 5) nav.classList.remove('nav-hidden');
+          } else {
+            nav.classList.remove('nav-hidden');
+          }
+          lastY = y;
           ticking = false;
         });
         ticking = true;
       }
+    }, { passive: true });
+  }
+
+
+  // ────────────────────────────────────────
+  // HERO WORD ROTATION  (umanodesign 패턴)
+  // ────────────────────────────────────────
+
+  function initHeroWordRotation() {
+    var words = SITE_DATA.hero.rotatingWords;
+    var idx = 0;
+    var wordEl = document.querySelector('#rotating-word strong');
+    var wrapEl = document.getElementById('rotating-word');
+    if (!wordEl || !wrapEl) return;
+
+    // 초기 너비 설정
+    wrapEl.style.width = wordEl.offsetWidth + 'px';
+
+    setInterval(function () {
+      wordEl.classList.add('hidden');
+      setTimeout(function () {
+        idx = (idx + 1) % words.length;
+        wordEl.textContent = words[idx];
+        wrapEl.style.width = wordEl.offsetWidth + 'px';
+        wordEl.classList.remove('hidden');
+      }, 250);
+    }, 1800);
+  }
+
+
+  // ────────────────────────────────────────
+  // HERO SCROLL EFFECT — corner rounding + parallax
+  // (umanodesign: borderBottomLeftRadius, marginLeft/Right on scroll)
+  // ────────────────────────────────────────
+
+  function initHeroScrollEffect() {
+    var heroBg = document.getElementById('hero-bg');
+    if (!heroBg) return;
+
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      var r = Math.min(1, y / 200);
+
+      // 스크롤할수록 양 옆 마진 + 하단 코너 라운딩
+      heroBg.style.marginLeft = (r * 12) + 'px';
+      heroBg.style.marginRight = (r * 12) + 'px';
+      heroBg.style.borderBottomLeftRadius = (r * 42) + 'px';
+      heroBg.style.borderBottomRightRadius = (r * 42) + 'px';
+    }, { passive: true });
+  }
+
+
+  // ────────────────────────────────────────
+  // STICKY TEXT REVEAL  (word-by-word color on scroll)
+  // ────────────────────────────────────────
+
+  function initStickyTextReveal() {
+    var section = document.getElementById('sticky-text');
+    if (!section) return;
+
+    var words = section.querySelectorAll('.sw');
+    var total = words.length;
+    var darkColor = getComputedStyle(document.documentElement).getPropertyValue('--black').trim();
+    var lightColor = '#d5d3cd';
+
+    window.addEventListener('scroll', function () {
+      var rect = section.getBoundingClientRect();
+      var scrollable = section.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+
+      var progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+
+      for (var i = 0; i < total; i++) {
+        var start = i / total;
+        var end = (i + 1) / total;
+        var alpha = Math.max(0, Math.min(1, (progress - start * 0.85) / (end - start + 0.04)));
+
+        if (alpha >= 1) {
+          words[i].style.color = darkColor;
+        } else if (alpha <= 0) {
+          words[i].style.color = lightColor;
+        } else {
+          words[i].style.color = 'color-mix(in srgb, ' + darkColor + ' ' + Math.round(alpha * 100) + '%, ' + lightColor + ')';
+        }
+      }
+    }, { passive: true });
+  }
+
+
+  // ────────────────────────────────────────
+  // SCROLL REVEAL — IntersectionObserver for cards
+  // ────────────────────────────────────────
+
+  function initScrollReveal() {
+    var cards = document.querySelectorAll('.tech-card, .project-card');
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var delay = parseInt(entry.target.getAttribute('data-delay') || '0', 10);
+          setTimeout(function () {
+            entry.target.classList.add('visible');
+          }, delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    cards.forEach(function (el) { observer.observe(el); });
+
+    // Section labels
+    var labels = document.querySelectorAll('.section-label');
+    var labelObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          labelObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    labels.forEach(function (el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      labelObs.observe(el);
     });
   }
 
 
-  // ============================================================
+  // ────────────────────────────────────────
+  // ACCORDION  (umanodesign FAQ 패턴)
+  // ────────────────────────────────────────
+
+  function initAccordion() {
+    var acc = document.getElementById('accordion');
+    if (!acc) return;
+
+    var openIdx = -1;
+
+    acc.addEventListener('click', function (e) {
+      var trigger = e.target.closest('.acc-trigger');
+      if (!trigger) return;
+
+      var item = trigger.closest('.acc-item');
+      var idx = parseInt(item.getAttribute('data-idx'), 10);
+      var body = item.querySelector('.acc-body');
+      var answer = item.querySelector('.acc-answer');
+
+      // 같은 걸 누르면 닫기
+      if (openIdx === idx) {
+        item.classList.remove('open');
+        body.style.maxHeight = '0';
+        openIdx = -1;
+        return;
+      }
+
+      // 기존 열린 것 닫기
+      var prev = acc.querySelector('.acc-item.open');
+      if (prev) {
+        prev.classList.remove('open');
+        prev.querySelector('.acc-body').style.maxHeight = '0';
+      }
+
+      // 새로 열기
+      item.classList.add('open');
+      body.style.maxHeight = (answer.offsetHeight + 16) + 'px';
+      openIdx = idx;
+    });
+  }
+
+
+  // ────────────────────────────────────────
   // MOBILE NAV TOGGLE
-  // ============================================================
+  // ────────────────────────────────────────
 
   function initMobileNav() {
-    const toggle = document.getElementById('nav-toggle');
-    const nav = document.getElementById('header-nav');
-    if (!toggle || !nav) return;
+    var toggle = document.getElementById('nav-toggle');
+    var menu = document.getElementById('nav-mobile');
+    if (!toggle || !menu) return;
 
-    toggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
+    toggle.addEventListener('click', function () {
+      menu.classList.toggle('open');
     });
 
-    // 링크 클릭 시 메뉴 닫기
-    nav.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        nav.classList.remove('open');
-      }
-    });
-  }
-
-
-  // ============================================================
-  // PROGRESSIVE DISCLOSURE
-  // ============================================================
-
-  function initProgressiveDisclosure() {
-    const ctaBtn = document.querySelector('[data-hero="cta"]');
-    const detailsSection = document.getElementById('details');
-    if (!ctaBtn || !detailsSection) return;
-
-    ctaBtn.addEventListener('click', () => {
-      detailsSection.classList.add('active');
-      setTimeout(() => {
-        detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 120);
-    });
-  }
-
-
-  // ============================================================
-  // MODAL SYSTEM
-  // ============================================================
-
-  function initModal() {
-    const overlay = document.getElementById('modal-overlay');
-    const modalContent = document.getElementById('modal-content');
-    const closeBtn = document.getElementById('modal-close');
-    if (!overlay || !modalContent || !closeBtn) return;
-
-    // 타임라인 아이템 클릭
-    document.addEventListener('click', (e) => {
-      const timelineItem = e.target.closest('.timeline-item[data-modal-id]');
-      if (!timelineItem) return;
-
-      const modalId = timelineItem.dataset.modalId;
-      const data = SITE_DATA.timeline.items.find(t => t.id === modalId);
-      if (!data || !data.modal) return;
-
-      modalContent.innerHTML = `
-        <div class="modal-tag">${data.modal.tag}</div>
-        <div class="modal-heading">${data.modal.heading}</div>
-        <div class="modal-body">${data.modal.bodyHTML}</div>
-      `;
-
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-
-    // 닫기
-    const closeModal = () => {
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    };
-
-    closeBtn.addEventListener('click', closeModal);
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('active')) {
-        closeModal();
-      }
+    menu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') menu.classList.remove('open');
     });
   }
 
