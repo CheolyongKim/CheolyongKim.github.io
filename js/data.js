@@ -61,8 +61,8 @@ const SITE_DATA = {
     items: [
       { id: "linetracer", title: "마이크로프로세서응용 LineTracer", desc: "Ti-RSLK embedded C 코딩으로 트랙 완주", tag: "Embedded", icon: "fa-solid fa-microchip", image: "assets/images/linetracer.png" },
       { id: "interop", title: "컴퓨터네트워크 Interoperability Test", desc: "HTTP Server&Client Java로 구현 후 GET, POST", tag: "Network", icon: "fa-solid fa-network-wired", image: "assets/images/interop.png" },
-      { id: "capstone", title: "졸업프로젝트 YachtDice", desc: "[TODO: 프로젝트 설명]", tag: "Capstone", icon: "fa-solid fa-graduation-cap", image: "assets/images/capstone.png" },
-      { id: "dutyflow", title: "KOSA 1차 프로젝트: HD_DutyFlow", desc: "현대백화점면세점 공항 인도장 픽업 예약관리 시스템", tag: "Enterprise", icon: "fa-solid fa-diagram-project", image: "assets/images/dutyflow.jpg" }
+      { id: "capstone", title: "졸업프로젝트 YachtDice", desc: "Yacht 주사위와 로그라이크 덱빌딩 요소를 결합한 게임 프로토타입", tag: "Gamedev", icon: "fa-solid fa-graduation-cap", image: "assets/images/capstone.png" },
+      { id: "dutyflow", title: "KOSA 1차 프로젝트: HD_DutyFlow", desc: "현대백화점면세점 공항 인도장 픽업 예약관리 시스템", tag: "Backend", icon: "fa-solid fa-diagram-project", image: "assets/images/dutyflow.jpg" }
     ]
   },
 
