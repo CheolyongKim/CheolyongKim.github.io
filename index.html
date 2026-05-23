@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김철용 | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 1. 디자인 시스템 정의 (6:3:1 법칙 및 타이포그래피) */
+        :root {
+            --bg-color: #EFECE3;       /* 60% 주조색 (아이보리) */
+            --primary-color: #4A70A9;  /* 30% 부조색 (딥 블루) */
+            --accent-color: #8FABD4;   /* 10% 강조색 (소프트 블루) */
+            --text-dark: #000000;      /* 대비 포인트 (블랙) */
+            --text-muted: #555555;
+            --card-bg: #FFFFFF;
+            
+            --font-main: 'Inter', 'Noto Sans KR', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: var(--font-main);
+            line-height: 1.7;
+            letter-spacing: -0.02em;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* 공통 레이아웃 구조 (Umanodesign 스타일의 단정한 그리드 기반) */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-family: var(--font-main);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        /* 2. 헤더 및 네비게이션 */
+        header {
+            width: 100%;
+            padding: 30px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.02em;
+        }
+
+        /* 3. 헤로 섹션 (Hero Section) */
+        .hero {
+            padding: 220px 0 120px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-tag {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: inline-block;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            word-break: keep-all;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 300;
+            word-break: keep-all;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--text-dark);
+            transition: color 0.2s ease;
+        }
+        
+        .meta-item i {
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .meta-item:hover {
+            color: var(--primary-color);
+        }
+
+        /* CTA 버튼 스타일 */
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(74, 112, 169, 0.15);
+        }
+
+        .btn-cta:hover {
+            background-color: #395886;
+        }
+
+        .btn-cta i {
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-cta:hover i {
+            transform: translateY(3px);
+        }
+
+        /* 4. 핵심 기술 스택 섹션 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .tech-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.01);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .tech-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .tech-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .tech-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* 5. 대표 프로젝트 하이라이트 섹션 */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            padding: 35px 30px;
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+        }
+
+        .project-top .project-icon {
+            font-size: 24px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .project-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .project-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .project-tag {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 20px;
+        }
+
+        /* 6. 타임라인 섹션 */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            height: 100%;
+            width: 2px;
+            background: rgba(74, 112, 169, 0.2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 80px;
+            cursor: pointer;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 6px;
+            left: 21px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 4px solid var(--primary-color);
+            z-index: 2;
+            transition: background 0.2s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent-color);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .timeline-hint {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--accent-color);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* 7. 상세 화면 섹션 (Progressive Disclosure) */
+        .details-section {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+            background-color: rgba(0, 0, 0, 0.01);
+            border-bottom: none;
+            padding: 0;
+        }
+
+        .details-section.active {
+            max-height: 1000px; /* 확장 효과를 위한 충분한 높이 확보 */
+            opacity: 1;
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .details-frame {
+            border: 1px dashed var(--accent-color);
+            padding: 60px 40px;
+            text-align: center;
+            background: #FFFFFF;
+        }
+
+        .details-frame p {
+            font-size: 16px;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        /* 8. 모달 팝업 (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--text-dark);
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+        }
+
+        .modal-tag {
+            font-size: 13px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .modal-body {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* 모달 내 군대 경력 표 스타일 */
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .modal-table th, .modal-table td {
+            border: 1px solid #E6E6E6;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .modal-table th {
+            background-color: #F9F8F6;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* 9. 푸터 */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            background-color: var(--bg-color);
+        }
+
+        /* 10. 정교한 반응형 미디어 쿼리 */
+        @media (max-width: 992px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 70px 0; }
+            .hero { padding: 160px 0 80px 0; }
+            .hero-title { font-size: 28px; }
+            .hero-desc { font-size: 16px; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .project-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 24px; }
+            .timeline-container::before { left: 15px; }
+            .timeline-item { padding-left: 50px; }
+            .timeline-dot { left: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-wrap">
+            <div class="logo">KIM CHEOLYONG</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-tag">Portfolio</span>
+                    <h1 class="hero-title">공통적인 본질을 통찰하기 위해 노력하며, 개발자를 목표로 하는 김철용입니다.</h1>
+                    <p class="hero-desc">취미인 게임개발을 실제 프로젝트로까지 완성시킨 경험이 있고, 동시에 CS와 인공지능 기술을 배우는 등 항상 배움과 성장의 과정에 있어 투트랙 이상의 유연한 사고를 갖추고 있습니다.</p>
+                    
+                    <div class="hero-meta">
+                        <a href="tel:010-3533-2198" class="meta-item">
+                            <i class="fa-solid fa-phone"></i> 010-3533-2198
+                        </a>
+                        <a href="mailto:cheolyongkim.kr@gmail.com" class="meta-item">
+                            <i class="fa-solid fa-envelope"></i> cheolyongkim.kr@gmail.com
+                        </a>
+                        <a href="https://github.com/CheolyongKim" target="_blank" class="meta-item">
+                            <i class="fa-brands fa-github"></i> GitHub
+                        </a>
+                    </div>
+
+                    <button class="btn-cta" id="cta-btn">
+                        자세한 소개 보기 <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-stack">
+            <div class="container">
+                <h2 class="section-title">Core Tech Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">Java</div>
+                        <div class="tech-desc">현 교육과정에서 주요 언어로 사용하며, 안정적인 백엔드 아키텍처 및 객체지향 설계를 다집니다.</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">Python</div>
+                        <div class="tech-desc">컴퓨터 그래픽스, 인공지능 프레임워크 활용 및 데이터 사이언스 분석 모델 구축에 활용하고 있습니다.</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">C</div>
+                        <div class="tech-desc">컴퓨터 구조, 운영체제 등 시스템 저수준을 다루는 거의 모든 학부 과목의 기반이 되었습니다.</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">C++</div>
+                        <div class="tech-desc">정교한 자료구조 활용과 효율적인 알고리즘 풀이 및 코딩테스트 대응에 주력으로 사용 중입니다.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title">Project Highlight</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-top">
+                            <div class="project-icon"><i class="fa-solid fa-desktop"></i></div>
+                            <div class="project-title">컴그 과제</div>
+                            <div class="project-desc">컴퓨터 그래픽스 API를 활용한 렌더링 및 파이프라인 제어 프로젝트 구현입니다.</div>
+                        </div>
+                        <div class="project-tag">Graphics</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-top">
+                            <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
+                            <div class="project-title">마프 linetracer</div>
+                            <div class="project-desc">마이크로프로세서 기반 하드웨어 제어 및 센서값 인식을 통한 주행 최적화 과제입니다.</div>
+                        </div>
+                        <div class="project-tag">Embedded</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-top">
+                            <div class="project-icon"><i class="fa-solid fa-network-wired"></i></div>
+                            <div class="project-title">컴네 interoperability test</div>
+                            <div class="project-desc">컴퓨터 네트워크 프로토콜 간의 상호 운용성 검증 및 트래픽 분석 실험입니다.</div>
+                        </div>
+                        <div class="project-tag">Network</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-top">
+                            <div class="project-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="project-title">졸업프로젝트</div>
+                            <div class="project-desc">학부 과정의 지식을 종합하여 설계 및 개발을 완료한 최종 졸업 작품 프로젝트입니다.</div>
+                        </div>
+                        <div class="project-tag">Capstone</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-top">
+                            <div class="project-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <div class="project-title">HD_DutyFlow</div>
+                            <div class="project-desc">효율적인 직무 흐름 및 데이터 관리를 도모하기 위해 설계된 프로젝트 플레이스홀더입니다.</div>
+                        </div>
+                        <div class="project-tag">Enterprise</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <div class="container">
+                <h2 class="section-title">Timeline</h2>
+                <div class="timeline-container">
+                    <div class="timeline-item" data-modal="uni">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">'20 ~ '26</div>
+                        <div class="timeline-title">학사 - 한양대학교 컴퓨터소프트웨어학부</div>
+                        <div class="timeline-desc">컴퓨터 과학의 전반적인 핵심 이론(CS) 및 소프트웨어 공학 역량을 축적했습니다.</div>
+                        <span class="timeline-hint"><i class="fa-solid fa-magnifying-glass"></i> 자세히 보기</span>
+                    </div>
+                    <div class="timeline-item" data-modal="military">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">'20 ~ '22</div>
+                        <div class="timeline-title">대한민국 육군 군 복무</div>
+                        <div class="timeline-desc">군 조직 생활을 통해 협업 역량 및 성실성, 책임감을 배양했습니다.</div>
+                        <span class="timeline-hint"><i class="fa-solid fa-magnifying-glass"></i> 자세히 보기</span>
+                    </div>
+                    <div class="timeline-item" data-modal="kosa">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">'26 ~ 현재</div>
+                        <div class="timeline-title">KOSA 교육과정 이수 중</div>
+                        <div class="timeline-desc">현재 MSA(마이크로서비스 아키텍처) 기반의 풀스택 양성과정을 수강하며 실무 역량을 강화하고 있습니다.</div>
+                        <span class="timeline-hint"><i class="fa-solid fa-magnifying-glass"></i> 자세히 보기</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="details" class="details-section">
+            <div class="container">
+                <div class="details-frame">
+                    <p><i class="fa-solid fa-circle-info" style="color: var(--accent-color); margin-bottom: 10px; font-size: 20px;"></i><br>추후 자세한 컨텐츠가 추가될 예정입니다.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Kim Cheolyong. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-box" id="modal-uni" style="display: none;">
+            <i class="fa-solid fa-xmark modal-close"></i>
+            <div class="modal-header">
+                <div class="modal-tag">Education</div>
+                <div class="modal-title">한양대학교 주요 이수 과목</div>
+            </div>
+            <div class="modal-body">
+                <p>컴퓨터소프트웨어학부 재학 기간 동안 소프트웨어 엔지니어로서 필요한 핵심 전공 역량을 깊이 있게 학습했습니다.</p>
+                <br>
+                <ul>
+                    <li><strong>주요 전공:</strong> 자료구조, 알고리즘, 운영체제, 컴퓨터네트워크, 컴퓨터 그래픽스</li>
+                    <li><strong>연구 및 실습:</strong> 학부 프로젝트를 통한 문제 분석 및 이론의 실질적 코드화 프로세스 경험</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="modal-box" id="modal-military" style="display: none;">
+            <i class="fa-solid fa-xmark modal-close"></i>
+            <div class="modal-header">
+                <div class="modal-tag">Military Experience</div>
+                <div class="modal-title">군 복무 상세 정보</div>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>상세 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>군별 / 계급</th>
+                            <td>대한민국 육군 / 병장 만기전역</td>
+                        </tr>
+                        <tr>
+                            <th>특기 / 병과</th>
+                            <td>일반행정 및 통신운용 등 소속 부대 보직 이수</td>
+                        </tr>
+                        <tr>
+                            <th>복무 기간</th>
+                            <td>2020년 ~ 2022년</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal-box" id="modal-kosa" style="display: none;">
+            <i class="fa-solid fa-xmark modal-close"></i>
+            <div class="modal-header">
+                <div class="modal-tag">Professional Training</div>
+                <div class="modal-title">KOSA MSA 기반 풀스택 양성과정</div>
+            </div>
+            <div class="modal-body">
+                <p>한국소프트웨어산업협회(KOSA)에서 주관하는 최신 실무 교육과정에 참여하고 있습니다.</p>
+                <br>
+                <ul>
+                    <li><strong>핵심 아키텍처:</strong> Microservice Architecture(MSA) 이론 및 에코시스템 분석</li>
+                    <li><strong>기술 범위:</strong> Java/Spring 기반 백엔드 아키텍처, 컴포넌트 설계 및 분산 환경 인프라 구축 실습</li>
+                    <li><strong>학습 목표:</strong> 대규모 트래픽 처리에 유연한 엔터프라이즈급 소프트웨어 개발 역량 내재화</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. 점진적 열람 (Progressive Disclosure) 기능 구현
+            const ctaBtn = document.getElementById('cta-btn');
+            const detailsSection = document.getElementById('details');
+
+            ctaBtn.addEventListener('click', () => {
+                // 상세 섹션 활성화 클래스 토글
+                detailsSection.classList.add('active');
+                
+                // 자연스러운 스크롤 이동
+                setTimeout(() => {
+                    detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            });
+
+            // 2. 타임라인 모달 제어 로직
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalBoxes = document.querySelectorAll('.modal-box');
+            const closeButtons = document.querySelectorAll('.modal-close');
+
+            timelineItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetModalId = item.getAttribute('data-modal');
+                    
+                    // 모든 모달 우선 숨김
+                    modalBoxes.forEach(box => box.style.display = 'none');
+                    
+                    // 대상 모달 노출 및 오버레이 활성화
+                    const targetModal = document.getElementById(`modal-${targetModalId}`);
+                    if(targetModal) {
+                        targetModal.style.display = 'block';
+                        modalOverlay.classList.add('active');
+                        document.body.style.overflow = 'hidden'; // 스크롤 방지
+                    }
+                });
+            });
+
+            // 모달 닫기 기능 함수
+            const closeModal = () => {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // 스크롤 복원
+                setTimeout(() => {
+                    modalBoxes.forEach(box => box.style.display = 'none');
+                }, 300);
+            };
+
+            closeButtons.forEach(btn => btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeModal();
+            }));
+
+            modalOverlay.addEventListener('click', (e) => {
+                if(e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
